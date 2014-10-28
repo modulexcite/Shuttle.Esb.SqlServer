@@ -1,0 +1,22 @@
+﻿<?xml version="1.0"?>
+<package >
+	<metadata>
+		<id>shuttle-esb-sqlserver</id>
+		<version>{semver}</version>
+		<authors>Eben Roux</authors>
+		<owners>Eben Roux</owners>
+		<licenseUrl>https://github.com/shuttle/shuttle-esb-sqlserver/raw/master/LICENSE</licenseUrl>
+		<projectUrl>https://github.com/shuttle/shuttle-esb-sqlserver</projectUrl>
+		<iconUrl>https://raw.githubusercontent.com/Shuttle/shuttle-esb-sqlserver/master/.media/logo.png</iconUrl>
+		<requireLicenseAcceptance>false</requireLicenseAcceptance>
+		<description>Microsoft Sql Server implementation for use with shuttle-esb.</description>
+		<releaseNotes/>
+		<copyright>Copyright (c) 2011-{year}, Eben Roux</copyright>
+		<tags>shuttle-esb sqlserver</tags>
+		<dependencies>
+			<dependency id="shuttle-esb-core" version="[{shuttle-esb-core-version}]" />
+			<dependency id="shuttle-core-infrastructure" version="[{shuttle-core-infrastructure-version}]" />
+			<dependency id="shuttle-core-data" version="[{shuttle-core-data-version}]" />
+		</dependencies>
+	</metadata>
+</package>

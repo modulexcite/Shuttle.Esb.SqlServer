@@ -7,13 +7,14 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{52ED5A
 	ProjectSection(SolutionItems) = preProject
 		.nuget\NuGet.Config = .nuget\NuGet.Config
 		.nuget\NuGet.exe = .nuget\NuGet.exe
-		.nuget\NuGet.targets = .nuget\NuGet.targets
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".build", ".build", "{9FC2CB74-BCCF-4CCB-9E49-2C131303DD20}"
 	ProjectSection(SolutionItems) = preProject
 		.build\package.msbuild = .build\package.msbuild
-		.build\shuttle-esb-sqlserver.nuspec = .build\shuttle-esb-sqlserver.nuspec
+		.build\package.nuspec = .build\package.nuspec
+		.build\Shuttle.Core.MSBuild.dll = .build\Shuttle.Core.MSBuild.dll
+		.build\Shuttle.Core.MSBuild.targets = .build\Shuttle.Core.MSBuild.targets
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{C3C9BCC5-E960-4606-AEDC-438A517F5AD4}"

@@ -73,17 +73,14 @@
     <DefineConstants>$(DefineConstants);NET451FULL</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Shuttle.Core.Data, Version=3.1.4.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>packages\shuttle-core-data.3.1.4\lib\net35-full\Shuttle.Core.Data.dll</HintPath>
+    <Reference Include="Shuttle.Core.Data">
+      <HintPath>..\packages\shuttle-core-data.3.1.4\lib\net35-full\Shuttle.Core.Data.dll</HintPath>
     </Reference>
-    <Reference Include="Shuttle.Core.Infrastructure, Version=3.1.4.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>packages\shuttle-core-infrastructure.3.1.4\lib\net35-full\Shuttle.Core.Infrastructure.dll</HintPath>
+    <Reference Include="Shuttle.Core.Infrastructure">
+      <HintPath>..\packages\shuttle-core-infrastructure.3.1.4\lib\net35-full\Shuttle.Core.Infrastructure.dll</HintPath>
     </Reference>
-    <Reference Include="Shuttle.ESB.Core, Version=3.3.7.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>packages\shuttle-esb-core.3.3.7\lib\net35-full\Shuttle.ESB.Core.dll</HintPath>
+    <Reference Include="Shuttle.ESB.Core">
+      <HintPath>..\packages\shuttle-esb-core.3.3.7\lib\net35-full\Shuttle.ESB.Core.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
@@ -91,7 +88,6 @@
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
     <Reference Include="System.Data" />
-    <Reference Include="System.Transactions" />
     <Reference Include="System.XML" />
   </ItemGroup>
   <ItemGroup>

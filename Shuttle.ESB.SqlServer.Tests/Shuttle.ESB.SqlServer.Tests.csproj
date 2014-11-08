@@ -34,34 +34,31 @@
   <ItemGroup>
     <Reference Include="log4net, Version=1.2.13.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Shuttle.ESB.SqlServer\packages\log4net.2.0.3\lib\net35-full\log4net.dll</HintPath>
+      <HintPath>..\packages\log4net.2.0.3\lib\net35-full\log4net.dll</HintPath>
     </Reference>
     <Reference Include="Moq">
-      <HintPath>..\Shuttle.ESB.SqlServer\packages\Moq.4.2.1409.1722\lib\net35\Moq.dll</HintPath>
+      <HintPath>..\packages\Moq.4.2.1409.1722\lib\net35\Moq.dll</HintPath>
     </Reference>
     <Reference Include="nunit.framework">
-      <HintPath>..\Shuttle.ESB.SqlServer\packages\NUnit.2.6.3\lib\nunit.framework.dll</HintPath>
+      <HintPath>..\packages\NUnit.2.6.3\lib\nunit.framework.dll</HintPath>
+    </Reference>
+    <Reference Include="Shuttle.Core.Data">
+      <HintPath>..\packages\shuttle-core-data.3.1.4\lib\net35-full\Shuttle.Core.Data.dll</HintPath>
     </Reference>
     <Reference Include="Shuttle.Core.Infrastructure">
-      <HintPath>..\Shuttle.ESB.SqlServer\packages\shuttle-core-infrastructure.3.1.4\lib\net35-full\Shuttle.Core.Infrastructure.dll</HintPath>
+      <HintPath>..\packages\shuttle-core-infrastructure.3.1.4\lib\net35-full\Shuttle.Core.Infrastructure.dll</HintPath>
     </Reference>
     <Reference Include="Shuttle.Core.Infrastructure.Log4Net">
-      <HintPath>..\Shuttle.ESB.SqlServer\packages\shuttle-core-infrastructure-log4net.3.1.4\lib\net35-full\Shuttle.Core.Infrastructure.Log4Net.dll</HintPath>
+      <HintPath>..\packages\shuttle-core-infrastructure-log4net.3.1.4\lib\net35-full\Shuttle.Core.Infrastructure.Log4Net.dll</HintPath>
     </Reference>
     <Reference Include="Shuttle.ESB.Core">
-      <HintPath>..\Shuttle.ESB.SqlServer\packages\shuttle-esb-core.3.3.7\lib\net35-full\Shuttle.ESB.Core.dll</HintPath>
+      <HintPath>..\packages\shuttle-esb-core.3.3.7\lib\net35-full\Shuttle.ESB.Core.dll</HintPath>
     </Reference>
-    <Reference Include="Shuttle.ESB.Tests, Version=1.0.4.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Shuttle.ESB.SqlServer\packages\shuttle-esb-tests.1.0.4\lib\net35-full\Shuttle.ESB.Tests.dll</HintPath>
+    <Reference Include="Shuttle.ESB.Tests">
+      <HintPath>..\packages\shuttle-esb-tests.1.0.4\lib\net35-full\Shuttle.ESB.Tests.dll</HintPath>
     </Reference>
-    <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />

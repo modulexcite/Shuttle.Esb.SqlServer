@@ -19,4 +19,8 @@
 			<dependency id="shuttle-core-data" version="[{shuttle-core-data-version}]" />
 		</dependencies>
 	</metadata>
+	<files>
+		<file src="..\..\..\Shuttle.ESB.SqlServer\Scripts\**\*.sql" target="scripts" />
+		<file src="lib\**\*.*" target="lib" />
+	</files>
 </package>

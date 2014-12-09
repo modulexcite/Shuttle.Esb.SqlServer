@@ -1,2 +1,2 @@
-select MessageBody from [dbo].[IdempotenceDeferredMessage] where MessageId = @MessageId
+select MessageBody from [dbo].[IdempotenceDeferredMessage] where MessageIdReceived = @MessageIdReceived
 

@@ -137,15 +137,16 @@ namespace Shuttle.ESB.SqlServer.Idempotence
 			}
 		}
 
-		public void AddDeferredMessage(TransportMessage processingTransportMessage, Stream deferredTransportMessageStream)
+		public void AddDeferredMessage(TransportMessage processingTransportMessage, TransportMessage deferredTransportMessage, Stream deferredTransportMessageStream)
 		{
 			using (_databaseConnectionFactory.Create(IdempotenceDataSource))
 			{
 				_databaseGateway.ExecuteUsing(
 					IdempotenceDataSource,
 					RawQuery.Create(_scriptProvider.GetScript(Script.IdempotenceSendDeferredMessage))
-					        .AddParameterValue(IdempotenceColumns.MessageId, processingTransportMessage.MessageId)
-					        .AddParameterValue(IdempotenceColumns.MessageBody, deferredTransportMessageStream.ToBytes()));
+							.AddParameterValue(IdempotenceColumns.MessageId, deferredTransportMessage.MessageId)
+							.AddParameterValue(IdempotenceColumns.MessageIdReceived, processingTransportMessage.MessageId)
+							.AddParameterValue(IdempotenceColumns.MessageBody, deferredTransportMessageStream.ToBytes()));
 			}
 		}
 
@@ -158,7 +159,7 @@ namespace Shuttle.ESB.SqlServer.Idempotence
 				var rows = _databaseGateway.GetRowsUsing(
 					IdempotenceDataSource,
 					RawQuery.Create(_scriptProvider.GetScript(Script.IdempotenceGetDeferredMessages))
-					        .AddParameterValue(IdempotenceColumns.MessageId, transportMessage.MessageId));
+					        .AddParameterValue(IdempotenceColumns.MessageIdReceived, transportMessage.MessageId));
 
 				foreach (var row in rows)
 				{
@@ -176,7 +177,7 @@ namespace Shuttle.ESB.SqlServer.Idempotence
 				_databaseGateway.ExecuteUsing(
 					IdempotenceDataSource,
 					RawQuery.Create(_scriptProvider.GetScript(Script.IdempotenceDeferredMessageSent))
-					        .AddParameterValue(IdempotenceColumns.MessageId, processingTransportMessage.MessageId));
+							.AddParameterValue(IdempotenceColumns.MessageId, deferredTransportMessage.MessageId));
 			}
 		}
 	}

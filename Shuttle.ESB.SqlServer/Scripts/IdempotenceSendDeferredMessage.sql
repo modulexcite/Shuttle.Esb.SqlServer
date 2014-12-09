@@ -1,4 +1,4 @@
 insert into [dbo].[IdempotenceDeferredMessage]
-	(MessageId, MessageBody) 
+	(MessageId, MessageIdReceived, MessageBody) 
 values 
-	(@MessageId, @MessageBody)
+	(@MessageId, @MessageIdReceived, @MessageBody)

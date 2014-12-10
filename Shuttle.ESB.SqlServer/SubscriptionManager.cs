@@ -28,7 +28,7 @@ namespace Shuttle.ESB.SqlServer
 
 		public static ISubscriptionManager Default()
 		{
-			var configuration = SqlServerConfiguration.Default();
+			var configuration = SqlServerSection.Default();
 
 			return
 				new SubscriptionManager(configuration,

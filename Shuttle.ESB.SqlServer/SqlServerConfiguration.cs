@@ -1,61 +1,41 @@
 using System;
-using System.Configuration;
 using System.IO;
 
 namespace Shuttle.ESB.SqlServer
 {
 	public class SqlServerConfiguration : ISqlServerConfiguration
 	{
-		private static SqlServerSection section;
+		private string _scriptFolder;
 
 		public SqlServerConfiguration()
 		{
 			SubscriptionManagerConnectionStringName = "Subscription";
+			IdempotenceServiceConnectionStringName = "Idempotence";
 			ScriptFolder = null;
-
-			NormalizeScriptFolder();
-		}
-
-		private void NormalizeScriptFolder()
-		{
-			if (string.IsNullOrEmpty(ScriptFolder))
-			{
-				ScriptFolder = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "scripts");
-			}
-			else
-			{
-				if (!Path.IsPathRooted(ScriptFolder))
-				{
-					ScriptFolder = Path.GetFullPath(ScriptFolder);
-				}
-			}
-		}
-
-		public static SqlServerSection SqlServerSection
-		{
-			get
-			{
-				return section ??
-				       (section = ConfigurationManager.GetSection("sqlServer") as SqlServerSection);
-			}
 		}
 
 		public string SubscriptionManagerConnectionStringName { get; set; }
-		public string ScriptFolder { get; set; }
+		public string IdempotenceServiceConnectionStringName { get; set; }
 
-		public static SqlServerConfiguration Default()
+		public string ScriptFolder
 		{
-			var configuration = new SqlServerConfiguration();
-
-			if (SqlServerSection != null)
+			get { return _scriptFolder; }
+			set
 			{
-				configuration.SubscriptionManagerConnectionStringName = section.SubscriptionManagerConnectionStringName;
-				configuration.ScriptFolder = section.ScriptFolder;
+				_scriptFolder = value;
 
-				configuration.NormalizeScriptFolder();
+				if (string.IsNullOrEmpty(_scriptFolder))
+				{
+					_scriptFolder = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "scripts");
+				}
+				else
+				{
+					if (!Path.IsPathRooted(ScriptFolder))
+					{
+						_scriptFolder = Path.GetFullPath(ScriptFolder);
+					}
+				}
 			}
-
-			return configuration;
 		}
 	}
 }

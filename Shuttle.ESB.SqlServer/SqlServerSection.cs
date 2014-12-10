@@ -19,6 +19,15 @@ namespace Shuttle.ESB.SqlServer
 			}
 		}
 
+		[ConfigurationProperty("idempotenceServiceConnectionStringName", IsRequired = false, DefaultValue = "Idempotence")]
+		public string IdempotenceServiceConnectionStringName
+		{
+			get
+			{
+				return (string)this["idempotenceServiceConnectionStringName"];
+			}
+		}
+
 		[ConfigurationProperty("scriptFolder", IsRequired = false, DefaultValue = null)]
 		public string ScriptFolder
 		{
@@ -26,6 +35,21 @@ namespace Shuttle.ESB.SqlServer
 			{
 				return (string)this["scriptFolder"];
 			}
+		}
+
+		public static SqlServerConfiguration Default()
+		{
+			var section = ConfigurationManager.GetSection("sqlServer") as SqlServerSection;
+			var configuration = new SqlServerConfiguration();
+
+			if (section != null)
+			{
+				configuration.SubscriptionManagerConnectionStringName = section.SubscriptionManagerConnectionStringName;
+				configuration.IdempotenceServiceConnectionStringName = section.IdempotenceServiceConnectionStringName;
+				configuration.ScriptFolder = section.ScriptFolder;
+			}
+
+			return configuration;
 		}
 	}
 }

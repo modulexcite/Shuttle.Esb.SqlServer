@@ -84,7 +84,7 @@ namespace Shuttle.ESB.SqlServer
 
 		public static IScriptProvider Default()
 		{
-			return new ScriptProvider(SqlServerSection.Default());
+			return new ScriptProvider(SqlServerSection.Configuration());
 		}
 	}
 }

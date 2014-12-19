@@ -37,9 +37,9 @@ namespace Shuttle.ESB.SqlServer
 			}
 		}
 
-		public static SqlServerConfiguration Default()
+		public static SqlServerConfiguration Configuration()
 		{
-			var section = ConfigurationManager.GetSection("sqlServer") as SqlServerSection;
+			var section = ShuttleConfigurationSection.Open<SqlServerSection>("sqlServer");
 			var configuration = new SqlServerConfiguration();
 
 			if (section != null)

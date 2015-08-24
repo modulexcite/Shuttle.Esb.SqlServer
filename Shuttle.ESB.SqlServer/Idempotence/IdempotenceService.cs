@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.IO;
+using System.Threading;
 using Shuttle.Core.Data;
 using Shuttle.Core.Infrastructure;
 using Shuttle.ESB.Core;
@@ -11,7 +12,7 @@ namespace Shuttle.ESB.SqlServer.Idempotence
 		IIdempotenceService,
 		IRequireInitialization
 	{
-		private readonly DataSource _idempotenceDataSource ;
+		private readonly DataSource _idempotenceDataSource;
 
 		private readonly IDatabaseGateway _databaseGateway;
 		private readonly IDatabaseConnectionFactory _databaseConnectionFactory;
@@ -44,7 +45,8 @@ namespace Shuttle.ESB.SqlServer.Idempotence
 			_databaseConnectionFactory = databaseConnectionFactory;
 			_databaseGateway = databaseGateway;
 
-			_idempotenceDataSource = new DataSource(configuration.IdempotenceServiceConnectionStringName, new SqlDbDataParameterFactory());
+			_idempotenceDataSource = new DataSource(configuration.IdempotenceServiceConnectionStringName,
+				new SqlDbDataParameterFactory());
 		}
 
 		public void Initialize(IServiceBus bus)
@@ -72,55 +74,68 @@ namespace Shuttle.ESB.SqlServer.Idempotence
 			}
 		}
 
-		public bool ShouldProcess(TransportMessage transportMessage)
+		public ProcessingStatus ProcessingStatus(TransportMessage transportMessage)
 		{
 			try
 			{
 				using (var connection = _databaseConnectionFactory.Create(_idempotenceDataSource))
+				using (var transaction = connection.BeginTransaction())
 				{
-					if (_databaseGateway.GetScalarUsing<int>(
-						_idempotenceDataSource,
-						RawQuery.Create(
-							_scriptProvider.GetScript(
-								Script.IdempotenceHasCompleted))
-							.AddParameterValue(IdempotenceColumns.MessageId, transportMessage.MessageId)) == 1)
+					try
 					{
-						return false;
-					}
+						if (_databaseGateway.GetScalarUsing<int>(
+							_idempotenceDataSource,
+							RawQuery.Create(
+								_scriptProvider.GetScript(
+									Script.IdempotenceHasCompleted))
+								.AddParameterValue(IdempotenceColumns.MessageId, transportMessage.MessageId)) == 1)
+						{
+							return Core.ProcessingStatus.Ignore;
+						}
 
-					if (_databaseGateway.GetScalarUsing<int>(
-						_idempotenceDataSource,
-						RawQuery.Create(
-							_scriptProvider.GetScript(
-								Script.IdempotenceIsProcessing))
-							.AddParameterValue(IdempotenceColumns.MessageId, transportMessage.MessageId)) == 1)
-					{
-						return false;
-					}
+						if (_databaseGateway.GetScalarUsing<int>(
+							_idempotenceDataSource,
+							RawQuery.Create(
+								_scriptProvider.GetScript(
+									Script.IdempotenceIsProcessing))
+								.AddParameterValue(IdempotenceColumns.MessageId, transportMessage.MessageId)) == 1)
+						{
+							return Core.ProcessingStatus.Ignore;
+						}
 
-					using (var transaction = connection.BeginTransaction())
-					{
 						_databaseGateway.ExecuteUsing(
 							_idempotenceDataSource,
 							RawQuery.Create(
 								_scriptProvider.GetScript(
 									Script.IdempotenceProcessing))
 								.AddParameterValue(IdempotenceColumns.MessageId, transportMessage.MessageId)
-								.AddParameterValue(IdempotenceColumns.InboxWorkQueueUri, transportMessage.RecipientInboxWorkQueueUri));
+								.AddParameterValue(IdempotenceColumns.InboxWorkQueueUri, transportMessage.RecipientInboxWorkQueueUri)
+								.AddParameterValue(IdempotenceColumns.AssignedThreadId, Thread.CurrentThread.ManagedThreadId));
 
+						var messageHandled = _databaseGateway.GetScalarUsing<int>(
+							_idempotenceDataSource,
+							RawQuery.Create(
+								_scriptProvider.GetScript(
+									Script.IdempotenceIsMessageHandled))
+								.AddParameterValue(IdempotenceColumns.MessageId, transportMessage.MessageId)) == 1;
+
+						return messageHandled
+							? Core.ProcessingStatus.MessageHandled
+							: Core.ProcessingStatus.Assigned;
+					}
+					finally
+					{
 						transaction.CommitTransaction();
 					}
 				}
-
-				return true;
 			}
 			catch (SqlException ex)
 			{
 				var message = ex.Message.ToUpperInvariant();
 
-				if (message.Contains("VIOLATION OF UNIQUE KEY CONSTRAINT") || message.Contains("CANNOT INSERT DUPLICATE KEY"))
+				if (message.Contains("VIOLATION OF UNIQUE KEY CONSTRAINT") || message.Contains("CANNOT INSERT DUPLICATE KEY") || message.Contains("IGNORE MESSAGE PROCESSING"))
 				{
-					return false;
+					return Core.ProcessingStatus.Ignore;
 				}
 
 				throw;
@@ -184,6 +199,17 @@ namespace Shuttle.ESB.SqlServer.Idempotence
 					_idempotenceDataSource,
 					RawQuery.Create(_scriptProvider.GetScript(Script.IdempotenceDeferredMessageSent))
 						.AddParameterValue(IdempotenceColumns.MessageId, deferredTransportMessage.MessageId));
+			}
+		}
+
+		public void MessageHandled(TransportMessage transportMessage)
+		{
+			using (_databaseConnectionFactory.Create(_idempotenceDataSource))
+			{
+				_databaseGateway.ExecuteUsing(
+					_idempotenceDataSource,
+					RawQuery.Create(_scriptProvider.GetScript(Script.IdempotenceMessageHandled))
+						.AddParameterValue(IdempotenceColumns.MessageId, transportMessage.MessageId));
 			}
 		}
 	}

@@ -25,6 +25,8 @@ namespace Shuttle.ESB.SqlServer
         public static readonly Script IdempotenceProcessing = new Script("IdempotenceProcessing");
         public static readonly Script IdempotenceComplete = new Script("IdempotenceComplete");
         public static readonly Script IdempotenceIsProcessing = new Script("IdempotenceIsProcessing");
+	    public static readonly Script IdempotenceIsMessageHandled = new Script("IdempotenceIsMessageHandled");
+		public static readonly Script IdempotenceMessageHandled = new Script("IdempotenceMessageHandled");
         public static readonly Script IdempotenceHasCompleted = new Script("IdempotenceHasCompleted");
         public static readonly Script IdempotenceSendDeferredMessage = new Script("IdempotenceSendDeferredMessage");
 		public static readonly Script IdempotenceDeferredMessageSent = new Script("IdempotenceDeferredMessageSent");

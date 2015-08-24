@@ -73,17 +73,17 @@
     <DefineConstants>$(DefineConstants);NET451FULL</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Shuttle.Core.Data, Version=3.1.5.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\shuttle-core-data.3.1.5\lib\net35-full\Shuttle.Core.Data.dll</HintPath>
+    <Reference Include="Shuttle.Core.Data, Version=3.1.6.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\shuttle-core-data.3.1.6\lib\net35-full\Shuttle.Core.Data.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Shuttle.Core.Infrastructure, Version=3.1.5.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\shuttle-core-infrastructure.3.1.5\lib\net35-full\Shuttle.Core.Infrastructure.dll</HintPath>
     </Reference>
-    <Reference Include="Shuttle.ESB.Core, Version=3.4.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\shuttle-esb-core.3.4.1\lib\net35-full\Shuttle.ESB.Core.dll</HintPath>
+    <Reference Include="Shuttle.ESB.Core, Version=3.6.5.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\shuttle-esb-core.3.6.5\lib\net35-full\Shuttle.ESB.Core.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
@@ -129,11 +129,6 @@
     <EmbeddedResource Include="Scripts\QueueRemove.sql" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Scripts\2000\IdempotenceServiceCreate.sql" />
-    <Content Include="Scripts\2000\IdempotenceServiceExists.sql" />
-    <Content Include="Scripts\2000\QueueCreate.sql" />
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="Scripts\QueueDequeue.sql" />
   </ItemGroup>
   <ItemGroup>
@@ -154,8 +149,6 @@
   <ItemGroup>
     <EmbeddedResource Include="Scripts\QueueDequeueId.sql" />
     <EmbeddedResource Include="Scripts\QueueRead.sql" />
-    <Content Include="Scripts\2000\SubscriptionManagerExists.sql" />
-    <Content Include="Scripts\2000\SubscriptionManagerCreate.sql" />
     <EmbeddedResource Include="Scripts\IdempotenceSendDeferredMessage.sql" />
     <EmbeddedResource Include="Scripts\IdempotenceDeferredMessageSent.sql" />
     <EmbeddedResource Include="Scripts\IdempotenceGetDeferredMessages.sql" />
@@ -166,6 +159,8 @@
     <EmbeddedResource Include="Scripts\IdempotenceServiceExists.sql" />
     <EmbeddedResource Include="Scripts\IdempotenceComplete.sql" />
     <EmbeddedResource Include="Scripts\IdempotenceIsProcessing.sql" />
+    <EmbeddedResource Include="Scripts\IdempotenceMessageHandled.sql" />
+    <EmbeddedResource Include="Scripts\IdempotenceIsMessageHandled.sql" />
     <Content Include="Scripts\SubscriptionManagerCreate.sql" />
   </ItemGroup>
   <ItemGroup>

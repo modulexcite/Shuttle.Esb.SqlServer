@@ -8,6 +8,9 @@ CREATE TABLE [dbo].[Idempotence](
 	[MessageId] [uniqueidentifier] NOT NULL,
 	[InboxWorkQueueUri] [varchar](265) NOT NULL,
 	[DateStarted] [datetime] NOT NULL,
+	[AssignedThreadId] [int] NULL,
+	[DateThreadIdAssigned] [datetime] NULL,
+	[MessageHandled] [int],
  CONSTRAINT [PK_Idempotence] PRIMARY KEY CLUSTERED 
 (
 	[MessageId] ASC
@@ -55,6 +58,8 @@ CREATE CLUSTERED INDEX [IX_IdempotenceDeferredMessage] ON [dbo].[IdempotenceDefe
 ) ON [PRIMARY]
 GO
 ALTER TABLE [dbo].[Idempotence] ADD  CONSTRAINT [DF_Idempotence_DateStarted]  DEFAULT (getdate()) FOR [DateStarted]
+GO
+ALTER TABLE [dbo].[Idempotence] ADD  CONSTRAINT [DF_Idempotence_MessageHandled]  DEFAULT ((0)) FOR [MessageHandled]
 GO
 ALTER TABLE [dbo].[IdempotenceHistory] ADD  CONSTRAINT [DF_IdempotenceHistory_DateStarted]  DEFAULT (getdate()) FOR [DateCompleted]
 GO

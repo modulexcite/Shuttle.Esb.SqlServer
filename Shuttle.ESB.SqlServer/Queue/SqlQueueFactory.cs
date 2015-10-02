@@ -7,15 +7,22 @@ namespace Shuttle.ESB.SqlServer
 {
 	public class SqlQueueFactory : IQueueFactory
 	{
-		private readonly IScriptProvider scriptProvider;
-		private readonly IDatabaseConnectionFactory databaseConnectionFactory;
-		private readonly IDatabaseGateway databaseGateway;
+		private readonly IScriptProvider _scriptProvider;
+		private readonly IDatabaseConnectionFactory _databaseConnectionFactory;
+		private readonly IDatabaseGateway _databaseGateway;
 
 		public SqlQueueFactory()
 		{
-			scriptProvider = ScriptProvider.Default();
-			databaseConnectionFactory = DatabaseConnectionFactory.Default();
-			databaseGateway = DatabaseGateway.Default();
+			_scriptProvider = ScriptProvider.Default();
+			_databaseConnectionFactory = DatabaseConnectionFactory.Default();
+			_databaseGateway = DatabaseGateway.Default();
+		}
+
+		public SqlQueueFactory(IScriptProvider scriptProvider, IDatabaseConnectionFactory databaseConnectionFactory, IDatabaseGateway databaseGateway)
+		{
+			_scriptProvider = scriptProvider;
+			_databaseConnectionFactory = databaseConnectionFactory;
+			_databaseGateway = databaseGateway;
 		}
 
 		public string Scheme
@@ -27,7 +34,7 @@ namespace Shuttle.ESB.SqlServer
 		{
 			Guard.AgainstNull(uri, "uri");
 
-			return new SqlQueue(uri, scriptProvider, databaseConnectionFactory, databaseGateway);
+			return new SqlQueue(uri, _scriptProvider, _databaseConnectionFactory, _databaseGateway);
 		}
 
 		public bool CanCreate(Uri uri)

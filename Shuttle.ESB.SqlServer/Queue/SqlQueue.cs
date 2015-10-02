@@ -50,8 +50,6 @@ namespace Shuttle.ESB.SqlServer
 
 		private readonly ILog _log;
 
-		private readonly SqlUriParser parser;
-
 		public SqlQueue(Uri uri)
 			: this(uri,
 				   ScriptProvider.Default(),
@@ -78,7 +76,7 @@ namespace Shuttle.ESB.SqlServer
 
 			Uri = uri;
 
-			parser = new SqlUriParser(uri);
+			var parser = new SqlUriParser(uri);
 
 			_dataSource = new DataSource(parser.ConnectionName, new SqlDbDataParameterFactory());
 			_tableName = parser.TableName;

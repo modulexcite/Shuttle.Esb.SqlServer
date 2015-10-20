@@ -8,20 +8,20 @@ namespace Shuttle.ESB.SqlServer
 	public class SqlQueueFactory : IQueueFactory
 	{
 		private readonly IScriptProvider _scriptProvider;
-		private readonly IDatabaseConnectionFactory _databaseConnectionFactory;
+		private readonly IDatabaseContextFactory _databaseContextFactory;
 		private readonly IDatabaseGateway _databaseGateway;
 
 		public SqlQueueFactory()
 		{
 			_scriptProvider = ScriptProvider.Default();
-			_databaseConnectionFactory = DatabaseConnectionFactory.Default();
-			_databaseGateway = DatabaseGateway.Default();
+			_databaseContextFactory = DatabaseContextFactory.Default();
+			_databaseGateway = new DatabaseGateway();
 		}
 
-		public SqlQueueFactory(IScriptProvider scriptProvider, IDatabaseConnectionFactory databaseConnectionFactory, IDatabaseGateway databaseGateway)
+		public SqlQueueFactory(IScriptProvider scriptProvider, IDatabaseContextFactory databaseContextFactory, IDatabaseGateway databaseGateway)
 		{
 			_scriptProvider = scriptProvider;
-			_databaseConnectionFactory = databaseConnectionFactory;
+			_databaseContextFactory = databaseContextFactory;
 			_databaseGateway = databaseGateway;
 		}
 
@@ -34,7 +34,7 @@ namespace Shuttle.ESB.SqlServer
 		{
 			Guard.AgainstNull(uri, "uri");
 
-			return new SqlQueue(uri, _scriptProvider, _databaseConnectionFactory, _databaseGateway);
+			return new SqlQueue(uri, _scriptProvider, _databaseContextFactory, _databaseGateway);
 		}
 
 		public bool CanCreate(Uri uri)

@@ -22,21 +22,21 @@ namespace Shuttle.ESB.SqlServer
 			public Guid MessageId { get; private set; }
 		}
 
-		private readonly DataSource _dataSource;
 		private readonly IDatabaseGateway _databaseGateway;
 
 		private readonly object _padlock = new object();
 		private readonly List<UnacknowledgedMessage> _unacknowledgedMessages = new List<UnacknowledgedMessage>();
 
 		private readonly List<Guid> _emptyMessageIds = new List<Guid>
-			{
-				Guid.Empty
-			};
+		{
+			Guid.Empty
+		};
 
 		private readonly IScriptProvider _scriptProvider;
 
+		private readonly string _connectionName;
 		private readonly string _tableName;
-		private readonly IDatabaseConnectionFactory _databaseConnectionFactory;
+		private readonly IDatabaseContextFactory _databaseContextFactory;
 
 		private IQuery _countQuery;
 		private IQuery _createQuery;
@@ -52,24 +52,24 @@ namespace Shuttle.ESB.SqlServer
 
 		public SqlQueue(Uri uri)
 			: this(uri,
-				   ScriptProvider.Default(),
-				   DatabaseConnectionFactory.Default(),
-				   DatabaseGateway.Default())
+				ScriptProvider.Default(),
+				DatabaseContextFactory.Default(),
+				new DatabaseGateway())
 		{
 		}
 
 		public SqlQueue(Uri uri,
-						IScriptProvider scriptProvider,
-						IDatabaseConnectionFactory databaseConnectionFactory,
-						IDatabaseGateway databaseGateway)
+			IScriptProvider scriptProvider,
+			IDatabaseContextFactory databaseContextFactory,
+			IDatabaseGateway databaseGateway)
 		{
 			Guard.AgainstNull(uri, "uri");
 			Guard.AgainstNull(scriptProvider, "scriptProvider");
-			Guard.AgainstNull(databaseConnectionFactory, "databaseConnectionFactory");
+			Guard.AgainstNull(databaseContextFactory, "databaseContextFactory");
 			Guard.AgainstNull(databaseGateway, "databaseGateway");
 
 			_scriptProvider = scriptProvider;
-			_databaseConnectionFactory = databaseConnectionFactory;
+			_databaseContextFactory = databaseContextFactory;
 			_databaseGateway = databaseGateway;
 
 			_log = Log.For(this);
@@ -78,7 +78,7 @@ namespace Shuttle.ESB.SqlServer
 
 			var parser = new SqlUriParser(uri);
 
-			_dataSource = new DataSource(parser.ConnectionName, new SqlDbDataParameterFactory());
+			_connectionName = parser.ConnectionName;
 			_tableName = parser.TableName;
 
 			BuildQueries();
@@ -93,9 +93,9 @@ namespace Shuttle.ESB.SqlServer
 
 			try
 			{
-				using (_databaseConnectionFactory.Create(_dataSource))
+				using (_databaseContextFactory.Create(_connectionName))
 				{
-					_databaseGateway.ExecuteUsing(_dataSource, _createQuery);
+					_databaseGateway.ExecuteUsing(_createQuery);
 				}
 			}
 			catch (Exception ex)
@@ -117,9 +117,9 @@ namespace Shuttle.ESB.SqlServer
 			{
 				lock (_padlock)
 				{
-					using (_databaseConnectionFactory.Create(_dataSource))
+					using (_databaseContextFactory.Create(_connectionName))
 					{
-						_databaseGateway.ExecuteUsing(_dataSource, _dropQuery);
+						_databaseGateway.ExecuteUsing(_dropQuery);
 					}
 
 					ResetUnacknowledgedMessageIds();
@@ -144,9 +144,9 @@ namespace Shuttle.ESB.SqlServer
 			{
 				lock (_padlock)
 				{
-					using (_databaseConnectionFactory.Create(_dataSource))
+					using (_databaseContextFactory.Create(_connectionName))
 					{
-						_databaseGateway.ExecuteUsing(_dataSource, _purgeQuery);
+						_databaseGateway.ExecuteUsing(_purgeQuery);
 					}
 
 					ResetUnacknowledgedMessageIds();
@@ -164,13 +164,12 @@ namespace Shuttle.ESB.SqlServer
 		{
 			try
 			{
-				using (_databaseConnectionFactory.Create(_dataSource))
+				using (_databaseContextFactory.Create(_connectionName))
 				{
 					_databaseGateway.ExecuteUsing(
-						_dataSource,
 						RawQuery.Create(_enqueueQueryStatement)
-								.AddParameterValue(QueueColumns.MessageId, messageId)
-								.AddParameterValue(QueueColumns.MessageBody, stream.ToBytes()));
+							.AddParameterValue(QueueColumns.MessageId, messageId)
+							.AddParameterValue(QueueColumns.MessageBody, stream.ToBytes()));
 				}
 			}
 			catch (Exception ex)
@@ -188,9 +187,9 @@ namespace Shuttle.ESB.SqlServer
 		{
 			try
 			{
-				using (_databaseConnectionFactory.Create(_dataSource))
+				using (_databaseContextFactory.Create(_connectionName))
 				{
-					return _databaseGateway.GetScalarUsing<int>(_dataSource, _existsQuery) == 1;
+					return _databaseGateway.GetScalarUsing<int>(_existsQuery) == 1;
 				}
 			}
 			catch (Exception ex)
@@ -205,9 +204,9 @@ namespace Shuttle.ESB.SqlServer
 		{
 			try
 			{
-				using (_databaseConnectionFactory.Create(_dataSource))
+				using (_databaseContextFactory.Create(_connectionName))
 				{
-					return _databaseGateway.GetScalarUsing<int>(_dataSource, _countQuery) == 0;
+					return _databaseGateway.GetScalarUsing<int>(_countQuery) == 0;
 				}
 			}
 			catch (Exception ex)
@@ -224,14 +223,13 @@ namespace Shuttle.ESB.SqlServer
 			{
 				try
 				{
-					using (_databaseConnectionFactory.Create(_dataSource))
+					using (_databaseContextFactory.Create(_connectionName))
 					{
 						var messageIds = _unacknowledgedMessages.Count > 0
-											 ? _unacknowledgedMessages.Select(unacknowledgedMessage => unacknowledgedMessage.MessageId)
-											 : _emptyMessageIds;
+							? _unacknowledgedMessages.Select(unacknowledgedMessage => unacknowledgedMessage.MessageId)
+							: _emptyMessageIds;
 
 						var row = _databaseGateway.GetSingleRowUsing(
-							_dataSource,
 							RawQuery.Create(
 								_scriptProvider.GetScript(
 									Script.QueueDequeue,
@@ -243,10 +241,10 @@ namespace Shuttle.ESB.SqlServer
 							return null;
 						}
 
-						var result = new MemoryStream((byte[])row["MessageBody"]);
+						var result = new MemoryStream((byte[]) row["MessageBody"]);
 						var messageId = new Guid(row["MessageId"].ToString());
 
-						MessageIdAcknowledgementRequired((int)row["SequenceId"], messageId);
+						MessageIdAcknowledgementRequired((int) row["SequenceId"], messageId);
 
 						return new ReceivedMessage(result, messageId);
 					}
@@ -285,11 +283,10 @@ namespace Shuttle.ESB.SqlServer
 
 				lock (_padlock)
 				{
-					using (_databaseConnectionFactory.Create(_dataSource))
+					using (_databaseContextFactory.Create(_connectionName))
 					{
-						_databaseGateway.ExecuteUsing(_dataSource,
-													  RawQuery.Create(_removeQueryStatement)
-															  .AddParameterValue(QueueColumns.SequenceId, SequenceId(messageId)));
+						_databaseGateway.ExecuteUsing(RawQuery.Create(_removeQueryStatement)
+							.AddParameterValue(QueueColumns.SequenceId, SequenceId(messageId)));
 
 						MessageIdAcknowledged(messageId);
 					}
@@ -311,24 +308,21 @@ namespace Shuttle.ESB.SqlServer
 
 				lock (_padlock)
 				{
-					using (var connection = _databaseConnectionFactory.Create(_dataSource))
+					using (var connection = _databaseContextFactory.Create(_connectionName))
 					using (var transaction = connection.BeginTransaction())
 					{
 						var row = _databaseGateway.GetSingleRowUsing(
-							_dataSource,
 							RawQuery.Create(_dequeueIdQueryStatement).AddParameterValue(QueueColumns.MessageId, messageId));
 
 						if (row != null)
 						{
-							_databaseGateway.ExecuteUsing(_dataSource,
-												  RawQuery.Create(_removeQueryStatement)
-														  .AddParameterValue(QueueColumns.SequenceId, SequenceId(messageId)));
+							_databaseGateway.ExecuteUsing(RawQuery.Create(_removeQueryStatement)
+								.AddParameterValue(QueueColumns.SequenceId, SequenceId(messageId)));
 
 							_databaseGateway.ExecuteUsing(
-								_dataSource,
 								RawQuery.Create(_enqueueQueryStatement)
-										.AddParameterValue(QueueColumns.MessageId, messageId)
-										.AddParameterValue(QueueColumns.MessageBody, row["MessageBody"]));
+									.AddParameterValue(QueueColumns.MessageId, messageId)
+									.AddParameterValue(QueueColumns.MessageBody, row["MessageBody"]));
 						}
 
 						MessageIdAcknowledged(messageId);
@@ -355,8 +349,8 @@ namespace Shuttle.ESB.SqlServer
 			var unacknowledgedMessage = _unacknowledgedMessages.Find(candidate => candidate.MessageId.Equals(messageId));
 
 			return unacknowledgedMessage != null
-					   ? unacknowledgedMessage.SequenceId
-					   : 0;
+				? unacknowledgedMessage.SequenceId
+				: 0;
 		}
 
 		private void ResetUnacknowledgedMessageIds()

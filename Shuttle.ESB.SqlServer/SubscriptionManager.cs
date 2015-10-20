@@ -12,12 +12,12 @@ namespace Shuttle.ESB.SqlServer
 		ISubscriptionManager,
 		IRequireInitialization
 	{
-		private readonly DataSource _subscriptionDataSource;
+		private readonly string _subscriptionConnectionStringName;
 
 		private readonly List<string> deferredSubscriptions = new List<string>();
 
 		private readonly IDatabaseGateway databaseGateway;
-		private readonly IDatabaseConnectionFactory databaseConnectionFactory;
+		private readonly IDatabaseContextFactory _databaseContextFactory;
 		private readonly IScriptProvider scriptProvider;
 
 		private IServiceBusConfiguration serviceBusConfiguration;
@@ -33,24 +33,24 @@ namespace Shuttle.ESB.SqlServer
 			return
 				new SubscriptionManager(configuration,
 										new ScriptProvider(configuration),
-										DatabaseConnectionFactory.Default(),
-										DatabaseGateway.Default());
+										DatabaseContextFactory.Default(),
+										new DatabaseGateway());
 		}
 
 
 		public SubscriptionManager(ISqlServerConfiguration configuration, IScriptProvider scriptProvider,
-								   IDatabaseConnectionFactory databaseConnectionFactory, IDatabaseGateway databaseGateway)
+								   IDatabaseContextFactory databaseContextFactory, IDatabaseGateway databaseGateway)
 		{
 			Guard.AgainstNull(configuration, "configuration");
 			Guard.AgainstNull(scriptProvider, "scriptProvider");
-			Guard.AgainstNull(databaseConnectionFactory, "databaseConnectionFactory");
+			Guard.AgainstNull(databaseContextFactory, "databaseContextFactory");
 			Guard.AgainstNull(databaseGateway, "databaseGateway");
 
 			this.scriptProvider = scriptProvider;
-			this.databaseConnectionFactory = databaseConnectionFactory;
+			this._databaseContextFactory = databaseContextFactory;
 			this.databaseGateway = databaseGateway;
 
-			_subscriptionDataSource = new DataSource(configuration.SubscriptionManagerConnectionStringName, new SqlDbDataParameterFactory());
+			_subscriptionConnectionStringName = configuration.SubscriptionManagerConnectionStringName;
 		}
 
 		protected bool HasDeferredSubscriptions
@@ -67,10 +67,9 @@ namespace Shuttle.ESB.SqlServer
 		{
 			serviceBusConfiguration = bus.Configuration;
 
-			using (databaseConnectionFactory.Create(_subscriptionDataSource))
+			using (_databaseContextFactory.Create(_subscriptionConnectionStringName))
 			{
 				if (databaseGateway.GetScalarUsing<int>(
-					_subscriptionDataSource,
 					RawQuery.Create(
 						scriptProvider.GetScript(
 							Script.SubscriptionManagerExists))) != 1)
@@ -96,12 +95,11 @@ namespace Shuttle.ESB.SqlServer
 				return;
 			}
 
-			using (databaseConnectionFactory.Create(_subscriptionDataSource))
+			using (_databaseContextFactory.Create(_subscriptionConnectionStringName))
 			{
 				foreach (var messageType in messageTypeFullNames)
 				{
 					databaseGateway.ExecuteUsing(
-						_subscriptionDataSource,
 						RawQuery.Create(
 							scriptProvider.GetScript(Script.SubscriptionManagerSubscribe))
 								.AddParameterValue(SubscriptionManagerColumns.InboxWorkQueueUri,
@@ -145,10 +143,9 @@ namespace Shuttle.ESB.SqlServer
 					{
 						DataTable table;
 
-						using (databaseConnectionFactory.Create(_subscriptionDataSource))
+						using (_databaseContextFactory.Create(_subscriptionConnectionStringName))
 						{
 							table = databaseGateway.GetDataTableFor(
-								_subscriptionDataSource,
 								RawQuery.Create(
 									scriptProvider.GetScript(
 										Script.SubscriptionManagerInboxWorkQueueUris))

@@ -12,10 +12,10 @@ namespace Shuttle.ESB.SqlServer.Idempotence
 		IIdempotenceService,
 		IRequireInitialization
 	{
-		private readonly DataSource _idempotenceDataSource;
+		private readonly string _idempotenceConnectionStringName;
 
 		private readonly IDatabaseGateway _databaseGateway;
-		private readonly IDatabaseConnectionFactory _databaseConnectionFactory;
+		private readonly IDatabaseContextFactory _databaseContextFactory;
 		private readonly IScriptProvider _scriptProvider;
 
 		public static IIdempotenceService Default()
@@ -25,37 +25,35 @@ namespace Shuttle.ESB.SqlServer.Idempotence
 			return
 				new IdempotenceService(configuration,
 					new ScriptProvider(configuration),
-					DatabaseConnectionFactory.Default(),
-					DatabaseGateway.Default());
+					DatabaseContextFactory.Default(),
+					new DatabaseGateway());
 		}
 
 
 		public IdempotenceService(
 			ISqlServerConfiguration configuration,
 			IScriptProvider scriptProvider,
-			IDatabaseConnectionFactory databaseConnectionFactory,
+			IDatabaseContextFactory databaseContextFactory,
 			IDatabaseGateway databaseGateway)
 		{
 			Guard.AgainstNull(configuration, "configuration");
-			Guard.AgainstNull(scriptProvider, "_scriptProvider");
-			Guard.AgainstNull(databaseConnectionFactory, "_databaseConnectionFactory");
-			Guard.AgainstNull(databaseGateway, "_databaseGateway");
+			Guard.AgainstNull(scriptProvider, "scriptProvider");
+			Guard.AgainstNull(databaseContextFactory, "databaseContextFactory");
+			Guard.AgainstNull(databaseGateway, "databaseGateway");
 
 			_scriptProvider = scriptProvider;
-			_databaseConnectionFactory = databaseConnectionFactory;
+			_databaseContextFactory = databaseContextFactory;
 			_databaseGateway = databaseGateway;
 
-			_idempotenceDataSource = new DataSource(configuration.IdempotenceServiceConnectionStringName,
-				new SqlDbDataParameterFactory());
+			_idempotenceConnectionStringName = configuration.IdempotenceServiceConnectionStringName;
 		}
 
 		public void Initialize(IServiceBus bus)
 		{
-			using (var connection = _databaseConnectionFactory.Create(_idempotenceDataSource))
+			using (var connection = _databaseContextFactory.Create(_idempotenceConnectionStringName))
 			using (var transaction = connection.BeginTransaction())
 			{
 				if (_databaseGateway.GetScalarUsing<int>(
-					_idempotenceDataSource,
 					RawQuery.Create(
 						_scriptProvider.GetScript(
 							Script.IdempotenceServiceExists))) != 1)
@@ -64,7 +62,6 @@ namespace Shuttle.ESB.SqlServer.Idempotence
 				}
 
 				_databaseGateway.ExecuteUsing(
-					_idempotenceDataSource,
 					RawQuery.Create(
 						_scriptProvider.GetScript(
 							Script.IdempotenceInitialize))
@@ -78,13 +75,12 @@ namespace Shuttle.ESB.SqlServer.Idempotence
 		{
 			try
 			{
-				using (var connection = _databaseConnectionFactory.Create(_idempotenceDataSource))
+				using (var connection = _databaseContextFactory.Create(_idempotenceConnectionStringName))
 				using (var transaction = connection.BeginTransaction())
 				{
 					try
 					{
 						if (_databaseGateway.GetScalarUsing<int>(
-							_idempotenceDataSource,
 							RawQuery.Create(
 								_scriptProvider.GetScript(
 									Script.IdempotenceHasCompleted))
@@ -94,7 +90,6 @@ namespace Shuttle.ESB.SqlServer.Idempotence
 						}
 
 						if (_databaseGateway.GetScalarUsing<int>(
-							_idempotenceDataSource,
 							RawQuery.Create(
 								_scriptProvider.GetScript(
 									Script.IdempotenceIsProcessing))
@@ -104,7 +99,6 @@ namespace Shuttle.ESB.SqlServer.Idempotence
 						}
 
 						_databaseGateway.ExecuteUsing(
-							_idempotenceDataSource,
 							RawQuery.Create(
 								_scriptProvider.GetScript(
 									Script.IdempotenceProcessing))
@@ -113,7 +107,6 @@ namespace Shuttle.ESB.SqlServer.Idempotence
 								.AddParameterValue(IdempotenceColumns.AssignedThreadId, Thread.CurrentThread.ManagedThreadId));
 
 						var messageHandled = _databaseGateway.GetScalarUsing<int>(
-							_idempotenceDataSource,
 							RawQuery.Create(
 								_scriptProvider.GetScript(
 									Script.IdempotenceIsMessageHandled))
@@ -144,11 +137,10 @@ namespace Shuttle.ESB.SqlServer.Idempotence
 
 		public void ProcessingCompleted(TransportMessage transportMessage)
 		{
-			using (var connection = _databaseConnectionFactory.Create(_idempotenceDataSource))
+			using (var connection = _databaseContextFactory.Create(_idempotenceConnectionStringName))
 			using (var transaction = connection.BeginTransaction())
 			{
 				_databaseGateway.ExecuteUsing(
-					_idempotenceDataSource,
 					RawQuery.Create(
 						_scriptProvider.GetScript(Script.IdempotenceComplete))
 						.AddParameterValue(IdempotenceColumns.MessageId, transportMessage.MessageId));
@@ -160,10 +152,9 @@ namespace Shuttle.ESB.SqlServer.Idempotence
 		public void AddDeferredMessage(TransportMessage processingTransportMessage, TransportMessage deferredTransportMessage,
 			Stream deferredTransportMessageStream)
 		{
-			using (_databaseConnectionFactory.Create(_idempotenceDataSource))
+			using (_databaseContextFactory.Create(_idempotenceConnectionStringName))
 			{
 				_databaseGateway.ExecuteUsing(
-					_idempotenceDataSource,
 					RawQuery.Create(_scriptProvider.GetScript(Script.IdempotenceSendDeferredMessage))
 						.AddParameterValue(IdempotenceColumns.MessageId, deferredTransportMessage.MessageId)
 						.AddParameterValue(IdempotenceColumns.MessageIdReceived, processingTransportMessage.MessageId)
@@ -175,10 +166,9 @@ namespace Shuttle.ESB.SqlServer.Idempotence
 		{
 			var result = new List<Stream>();
 
-			using (_databaseConnectionFactory.Create(_idempotenceDataSource))
+			using (_databaseContextFactory.Create(_idempotenceConnectionStringName))
 			{
 				var rows = _databaseGateway.GetRowsUsing(
-					_idempotenceDataSource,
 					RawQuery.Create(_scriptProvider.GetScript(Script.IdempotenceGetDeferredMessages))
 						.AddParameterValue(IdempotenceColumns.MessageIdReceived, transportMessage.MessageId));
 
@@ -193,10 +183,9 @@ namespace Shuttle.ESB.SqlServer.Idempotence
 
 		public void DeferredMessageSent(TransportMessage processingTransportMessage, TransportMessage deferredTransportMessage)
 		{
-			using (_databaseConnectionFactory.Create(_idempotenceDataSource))
+			using (_databaseContextFactory.Create(_idempotenceConnectionStringName))
 			{
 				_databaseGateway.ExecuteUsing(
-					_idempotenceDataSource,
 					RawQuery.Create(_scriptProvider.GetScript(Script.IdempotenceDeferredMessageSent))
 						.AddParameterValue(IdempotenceColumns.MessageId, deferredTransportMessage.MessageId));
 			}
@@ -204,10 +193,9 @@ namespace Shuttle.ESB.SqlServer.Idempotence
 
 		public void MessageHandled(TransportMessage transportMessage)
 		{
-			using (_databaseConnectionFactory.Create(_idempotenceDataSource))
+			using (_databaseContextFactory.Create(_idempotenceConnectionStringName))
 			{
 				_databaseGateway.ExecuteUsing(
-					_idempotenceDataSource,
 					RawQuery.Create(_scriptProvider.GetScript(Script.IdempotenceMessageHandled))
 						.AddParameterValue(IdempotenceColumns.MessageId, transportMessage.MessageId));
 			}

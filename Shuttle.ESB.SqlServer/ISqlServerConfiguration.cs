@@ -2,8 +2,8 @@ namespace Shuttle.ESB.SqlServer
 {
 	public interface ISqlServerConfiguration
 	{
-		string SubscriptionManagerConnectionStringName { get; }
-		string IdempotenceServiceConnectionStringName { get; }
+		string SubscriptionManagerConnectionString { get; }
+		string IdempotenceServiceConnectionString { get; }
 		string ScriptFolder { get; }
 	}
 }

@@ -8,16 +8,16 @@ namespace Shuttle.ESB.SqlServer
 {
 	public class ScriptProvider : IScriptProvider
 	{
-		private readonly ISqlServerConfiguration _configuration;
-		private static readonly object _padlock = new object();
+		private readonly string _scriptFolder;
+		private static readonly object Padlock = new object();
 
 		private readonly Dictionary<Script, string> _scripts = new Dictionary<Script, string>();
 
-		public ScriptProvider(ISqlServerConfiguration configuration)
+		public ScriptProvider(string scriptFolder)
 		{
-			Guard.AgainstNull(configuration, "configuration");
+            Guard.AgainstNullOrEmptyString(scriptFolder, "scriptFolder");
 
-			_configuration = configuration;
+			_scriptFolder = scriptFolder;
 		}
 
 		public string GetScript(Script script, params string[] parameters)
@@ -34,7 +34,7 @@ namespace Shuttle.ESB.SqlServer
 
 		private void AddScript(Script script)
 		{
-			lock (_padlock)
+			lock (Padlock)
 			{
 				if (_scripts.ContainsKey(script))
 				{
@@ -43,9 +43,9 @@ namespace Shuttle.ESB.SqlServer
 
 				var files = new string[0];
 
-				if (Directory.Exists(_configuration.ScriptFolder))
+				if (Directory.Exists(_scriptFolder))
 				{
-					files = Directory.GetFiles(_configuration.ScriptFolder, script.FileName, SearchOption.AllDirectories);
+					files = Directory.GetFiles(_scriptFolder, script.FileName, SearchOption.AllDirectories);
 				}
 
 				if (files.Length == 0)
@@ -57,7 +57,7 @@ namespace Shuttle.ESB.SqlServer
 
 				if (files.Length > 1)
 				{
-					throw new ScriptException(string.Format(SqlResources.ScriptCountException, _configuration.ScriptFolder, script.FileName, files.Length));
+					throw new ScriptException(string.Format(SqlResources.ScriptCountException, _scriptFolder, script.FileName, files.Length));
 				}
 
 				_scripts.Add(script, File.ReadAllText(files[0]));
@@ -84,7 +84,7 @@ namespace Shuttle.ESB.SqlServer
 
 		public static IScriptProvider Default()
 		{
-			return new ScriptProvider(SqlServerSection.Configuration());
+			return new ScriptProvider(SqlServerSection.Configuration().ScriptFolder);
 		}
 	}
 }

@@ -5,17 +5,17 @@ namespace Shuttle.ESB.SqlServer
 {
 	public class SqlServerConfiguration : ISqlServerConfiguration
 	{
-		private string _scriptFolder;
+        internal static string ProviderName = "System.Data.SqlClient";
+
+        private string _scriptFolder;
 
 		public SqlServerConfiguration()
 		{
-			SubscriptionManagerConnectionStringName = "Subscription";
-			IdempotenceServiceConnectionStringName = "Idempotence";
 			ScriptFolder = null;
 		}
 
-		public string SubscriptionManagerConnectionStringName { get; set; }
-		public string IdempotenceServiceConnectionStringName { get; set; }
+		public string SubscriptionManagerConnectionString { get; set; }
+		public string IdempotenceServiceConnectionString { get; set; }
 
 		public string ScriptFolder
 		{

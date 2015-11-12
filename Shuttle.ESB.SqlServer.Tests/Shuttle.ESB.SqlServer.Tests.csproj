@@ -57,9 +57,9 @@
       <HintPath>..\packages\shuttle-core-infrastructure-log4net.3.2.0\lib\net40-full\Shuttle.Core.Infrastructure.Log4Net.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Shuttle.ESB.Core, Version=4.0.2.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Shuttle.ESB.Core, Version=4.0.3.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\shuttle-esb-core.4.0.2\lib\net40-full\Shuttle.ESB.Core.dll</HintPath>
+      <HintPath>..\packages\shuttle-esb-core.4.0.3\lib\net40-full\Shuttle.ESB.Core.dll</HintPath>
     </Reference>
     <Reference Include="Shuttle.ESB.Tests, Version=3.6.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\shuttle-esb-tests.3.6.0\lib\net40-full\Shuttle.ESB.Tests.dll</HintPath>

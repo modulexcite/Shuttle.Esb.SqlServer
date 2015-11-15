@@ -69,9 +69,9 @@
     <DefineConstants>$(DefineConstants);NET451FULL</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Shuttle.Core.Data, Version=3.2.6.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Shuttle.Core.Data, Version=3.2.7.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\shuttle-core-data.3.2.6\lib\net40-full\Shuttle.Core.Data.dll</HintPath>
+      <HintPath>..\packages\shuttle-core-data.3.2.7\lib\net40-full\Shuttle.Core.Data.dll</HintPath>
     </Reference>
     <Reference Include="Shuttle.Core.Infrastructure, Version=3.3.1.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>

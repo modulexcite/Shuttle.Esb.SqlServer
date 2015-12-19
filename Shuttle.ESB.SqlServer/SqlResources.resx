@@ -112,14 +112,14 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="ConnectionNameNotFound" xml:space="preserve">
-    <value>Could not find connection name '{0}' in the application configuration file.</value>
-    <comment>{0} = connection name</comment>
+  <data name="ConnectionStringEmpty" xml:space="preserve">
+    <value>The connection string used by '{0}' is empty.</value>
+    <comment>{0} = name of component requiring the connecting string</comment>
   </data>
   <data name="CountError" xml:space="preserve">
     <value>Could not get count for queue '{0}'.  Exception: {1}.  Query: {2}</value>

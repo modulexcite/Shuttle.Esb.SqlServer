@@ -55,12 +55,7 @@ namespace Shuttle.ESB.SqlServer
         {
             var settings = ConfigurationManager.ConnectionStrings[connectionStringName];
 
-            if (settings == null)
-            {
-                throw new ConfigurationErrorsException(string.Format(SqlResources.ConnectionNameNotFound, connectionStringName));
-            }
-
-            return settings.ConnectionString;
+            return settings == null ? string.Empty : settings.ConnectionString;
         }
     }
 }

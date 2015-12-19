@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Configuration;
 using System.Data.SqlClient;
 using System.IO;
 using System.Threading;
@@ -34,6 +35,12 @@ namespace Shuttle.ESB.SqlServer.Idempotence
             _databaseGateway = databaseGateway;
 
             _idempotenceConnectionString = configuration.IdempotenceServiceConnectionString;
+
+            if (string.IsNullOrEmpty(_idempotenceConnectionString))
+            {
+                throw new ConfigurationErrorsException(string.Format(SqlResources.ConnectionStringEmpty,
+                    "IdempotenceService"));
+            }
         }
 
         public ProcessingStatus ProcessingStatus(TransportMessage transportMessage)

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data;
 using System.Linq;
 using Shuttle.Core.Data;
@@ -38,6 +39,12 @@ namespace Shuttle.ESB.SqlServer
             _databaseGateway = databaseGateway;
 
             _subscriptionConnectionString = configuration.SubscriptionManagerConnectionString;
+
+            if (string.IsNullOrEmpty(_subscriptionConnectionString))
+            {
+                throw new ConfigurationErrorsException(string.Format(SqlResources.ConnectionStringEmpty,
+                    "SubscriptionManager"));
+            }
         }
 
         protected bool HasDeferredSubscriptions

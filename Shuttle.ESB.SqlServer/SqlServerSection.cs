@@ -1,4 +1,5 @@
 ﻿using System.Configuration;
+using Shuttle.Core.Infrastructure;
 using Shuttle.ESB.Core;
 
 namespace Shuttle.ESB.SqlServer
@@ -25,14 +26,9 @@ namespace Shuttle.ESB.SqlServer
             get { return (string) this["scriptFolder"]; }
         }
 
-        public static SqlServerSection Open(string file)
-        {
-            return ShuttleConfigurationSection.Open<SqlServerSection>("sqlServer", file);
-        }
-
         public static SqlServerConfiguration Configuration()
         {
-            var section = ShuttleConfigurationSection.Open<SqlServerSection>("sqlServer");
+            var section = ConfigurationSectionProvider.Open<SqlServerSection>("shuttle", "sqlServer");
             var configuration = new SqlServerConfiguration();
 
             var subscriptionManagerConnectionStringName = "Subscription";

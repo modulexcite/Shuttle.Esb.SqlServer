@@ -11,7 +11,7 @@
 		<requireLicenseAcceptance>false</requireLicenseAcceptance>
 		<description>Microsoft Sql Server implementation for use with shuttle-esb.</description>
 		<releaseNotes/>
-		<copyright>Copyright (c) 2011-{year}, Eben Roux</copyright>
+		<copyright>Copyright (c) {year}, Eben Roux</copyright>
 		<tags>shuttle-esb sqlserver</tags>
 		<dependencies>
 			<dependency id="shuttle-esb-core" version="{shuttle-esb-core-version}" />

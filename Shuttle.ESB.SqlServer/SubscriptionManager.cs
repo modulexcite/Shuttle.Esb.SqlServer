@@ -89,7 +89,12 @@ namespace Shuttle.ESB.SqlServer
                 return;
             }
 
-            using (_databaseContextFactory.Create(SqlServerConfiguration.ProviderName, _subscriptionConnectionString))
+	        if (_serviceBusConfiguration.IsWorker)
+	        {
+		        return;
+	        }
+
+	        using (_databaseContextFactory.Create(SqlServerConfiguration.ProviderName, _subscriptionConnectionString))
             {
                 foreach (var messageType in messageTypeFullNames)
                 {

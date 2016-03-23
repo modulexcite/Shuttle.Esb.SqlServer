@@ -9,18 +9,18 @@
 		<projectUrl>https://github.com/shuttle/shuttle-esb-sqlserver</projectUrl>
 		<iconUrl>https://raw.githubusercontent.com/Shuttle/shuttle-esb-sqlserver/master/.media/logo.png</iconUrl>
 		<requireLicenseAcceptance>false</requireLicenseAcceptance>
-		<description>Microsoft Sql Server implementation for use with shuttle-esb.</description>
+		<description>Microsoft Sql Server implementation for use with Shuttle.Esb.</description>
 		<releaseNotes/>
 		<copyright>Copyright (c) {year}, Eben Roux</copyright>
-		<tags>shuttle-esb sqlserver</tags>
+		<tags>shuttle-esb shuttle-esb-sqlserver sqlserver</tags>
 		<dependencies>
-			<dependency id="shuttle-esb-core" version="{shuttle-esb-core-version}" />
-			<dependency id="shuttle-core-infrastructure" version="{shuttle-core-infrastructure-version}" />
-			<dependency id="shuttle-core-data" version="{shuttle-core-data-version}" />
+			<dependency id="Shuttle.Esb" version="{Shuttle.Esb-version}" />
+			<dependency id="Shuttle.Core.Infrastructure" version="{Shuttle.Core.Infrastructure-version}" />
+			<dependency id="Shuttle.Core.Data" version="{Shuttle.Core.Data-version}" />
 		</dependencies>
 	</metadata>
 	<files>
-		<file src="..\..\..\Shuttle.ESB.SqlServer\Scripts\**\*.sql" target="scripts" />
+		<file src="..\..\..\Shuttle.Esb.SqlServer\Scripts\**\*.sql" target="scripts" />
 		<file src="lib\**\*.*" target="lib" />
 	</files>
 </package>

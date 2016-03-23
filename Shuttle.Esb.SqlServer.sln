@@ -1,7 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shuttle.ESB.SqlServer", "Shuttle.ESB.SqlServer\Shuttle.ESB.SqlServer.csproj", "{71B25665-8F18-4A3B-B2CC-0C6444252091}"
+# Visual Studio 14
+VisualStudioVersion = 14.0.24720.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shuttle.Esb.SqlServer", "Shuttle.Esb.SqlServer\Shuttle.Esb.SqlServer.csproj", "{71B25665-8F18-4A3B-B2CC-0C6444252091}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{52ED5AA0-9921-4CC5-8FFB-1A5853B1D8FC}"
 	ProjectSection(SolutionItems) = preProject
@@ -18,11 +20,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".build", ".build", "{9FC2CB
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{C3C9BCC5-E960-4606-AEDC-438A517F5AD4}"
 	ProjectSection(SolutionItems) = preProject
-		..\LICENSE = ..\LICENSE
-		..\README.md = ..\README.md
+		LICENSE = LICENSE
+		README.md = README.md
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shuttle.ESB.SqlServer.Tests", "Shuttle.ESB.SqlServer.Tests\Shuttle.ESB.SqlServer.Tests.csproj", "{46B43BF2-0512-4BAB-8863-0F3E427215F6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shuttle.Esb.SqlServer.Tests", "Shuttle.Esb.SqlServer.Tests\Shuttle.Esb.SqlServer.Tests.csproj", "{46B43BF2-0512-4BAB-8863-0F3E427215F6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -51,4 +53,3 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 EndGlobal
-

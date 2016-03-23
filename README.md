@@ -1,4 +1,4 @@
-shuttle-esb-sqlserver
+Shuttle.Esb.SqlServer
 =====================
 
-Microsoft SQL Server implementation for use with shuttle-esb. 
+Microsoft SQL Server implementation for use with Shuttl.Esb. 

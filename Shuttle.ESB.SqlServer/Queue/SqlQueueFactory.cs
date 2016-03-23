@@ -1,9 +1,9 @@
 using System;
 using Shuttle.Core.Data;
 using Shuttle.Core.Infrastructure;
-using Shuttle.ESB.Core;
+using Shuttle.Esb;
 
-namespace Shuttle.ESB.SqlServer
+namespace Shuttle.Esb.SqlServer
 {
 	public class SqlQueueFactory : IQueueFactory
 	{

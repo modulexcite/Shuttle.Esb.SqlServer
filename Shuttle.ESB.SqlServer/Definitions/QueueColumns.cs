@@ -2,7 +2,7 @@ using System;
 using System.Data;
 using Shuttle.Core.Data;
 
-namespace Shuttle.ESB.SqlServer
+namespace Shuttle.Esb.SqlServer
 {
     public class QueueColumns
     {

@@ -4,7 +4,7 @@ using System.IO;
 using System.Reflection;
 using Shuttle.Core.Infrastructure;
 
-namespace Shuttle.ESB.SqlServer
+namespace Shuttle.Esb.SqlServer
 {
 	public class ScriptProvider : IScriptProvider
 	{
@@ -68,7 +68,7 @@ namespace Shuttle.ESB.SqlServer
 		{
 			using (var stream =
 				Assembly.GetCallingAssembly().GetManifestResourceStream(
-					string.Format("Shuttle.ESB.SqlServer.Scripts.{0}", script.FileName)))
+					string.Format("Shuttle.Esb.SqlServer.Scripts.{0}", script.FileName)))
 			{
 				if (stream == null)
 				{

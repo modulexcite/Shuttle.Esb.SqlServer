@@ -5,9 +5,8 @@ using System.IO;
 using System.Threading;
 using Shuttle.Core.Data;
 using Shuttle.Core.Infrastructure;
-using Shuttle.ESB.Core;
 
-namespace Shuttle.ESB.SqlServer.Idempotence
+namespace Shuttle.Esb.SqlServer.Idempotence
 {
     public class IdempotenceService :
         IIdempotenceService,
@@ -60,7 +59,7 @@ namespace Shuttle.ESB.SqlServer.Idempotence
                                     Script.IdempotenceHasCompleted))
                                 .AddParameterValue(IdempotenceColumns.MessageId, transportMessage.MessageId)) == 1)
                         {
-                            return Core.ProcessingStatus.Ignore;
+                            return Esb.ProcessingStatus.Ignore;
                         }
 
                         if (_databaseGateway.GetScalarUsing<int>(
@@ -69,7 +68,7 @@ namespace Shuttle.ESB.SqlServer.Idempotence
                                     Script.IdempotenceIsProcessing))
                                 .AddParameterValue(IdempotenceColumns.MessageId, transportMessage.MessageId)) == 1)
                         {
-                            return Core.ProcessingStatus.Ignore;
+                            return Esb.ProcessingStatus.Ignore;
                         }
 
                         _databaseGateway.ExecuteUsing(
@@ -89,8 +88,8 @@ namespace Shuttle.ESB.SqlServer.Idempotence
                                 .AddParameterValue(IdempotenceColumns.MessageId, transportMessage.MessageId)) == 1;
 
                         return messageHandled
-                            ? Core.ProcessingStatus.MessageHandled
-                            : Core.ProcessingStatus.Assigned;
+                            ? Esb.ProcessingStatus.MessageHandled
+                            : Esb.ProcessingStatus.Assigned;
                     }
                     finally
                     {
@@ -105,7 +104,7 @@ namespace Shuttle.ESB.SqlServer.Idempotence
                 if (message.Contains("VIOLATION OF UNIQUE KEY CONSTRAINT") ||
                     message.Contains("CANNOT INSERT DUPLICATE KEY") || message.Contains("IGNORE MESSAGE PROCESSING"))
                 {
-                    return Core.ProcessingStatus.Ignore;
+                    return Esb.ProcessingStatus.Ignore;
                 }
 
                 throw;

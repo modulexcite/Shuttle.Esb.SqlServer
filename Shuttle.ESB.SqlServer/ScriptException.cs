@@ -1,6 +1,6 @@
 using System;
 
-namespace Shuttle.ESB.SqlServer
+namespace Shuttle.Esb.SqlServer
 {
     public class ScriptException : Exception
     {

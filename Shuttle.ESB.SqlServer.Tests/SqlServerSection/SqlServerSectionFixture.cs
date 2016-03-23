@@ -2,7 +2,7 @@ using System;
 using System.IO;
 using Shuttle.Core.Infrastructure;
 
-namespace Shuttle.ESB.SqlServer.Tests
+namespace Shuttle.Esb.SqlServer.Tests
 {
 	public class SqlServerSectionFixture
 	{

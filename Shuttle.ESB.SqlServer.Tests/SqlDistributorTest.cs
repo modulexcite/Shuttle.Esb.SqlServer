@@ -1,7 +1,7 @@
 ﻿using NUnit.Framework;
-using Shuttle.ESB.Tests;
+using Shuttle.Esb.Tests;
 
-namespace Shuttle.ESB.SqlServer.Tests
+namespace Shuttle.Esb.SqlServer.Tests
 {
 	public class SqlDistributorTest : DistributorFixture
 	{

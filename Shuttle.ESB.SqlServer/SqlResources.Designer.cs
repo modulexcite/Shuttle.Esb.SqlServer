@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Shuttle.ESB.SqlServer {
+namespace Shuttle.Esb.SqlServer {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace Shuttle.ESB.SqlServer {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Shuttle.ESB.SqlServer.SqlResources", typeof(SqlResources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Shuttle.Esb.SqlServer.SqlResources", typeof(SqlResources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;

@@ -1,6 +1,6 @@
 using NUnit.Framework;
 
-namespace Shuttle.ESB.SqlServer.Tests
+namespace Shuttle.Esb.SqlServer.Tests
 {
 	[TestFixture]
 	public class SqlServerSectionTest : SqlServerSectionFixture

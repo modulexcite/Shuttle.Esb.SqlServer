@@ -1,7 +1,7 @@
 using System.Configuration;
 using Shuttle.Core.Infrastructure;
 
-namespace Shuttle.ESB.SqlServer
+namespace Shuttle.Esb.SqlServer
 {
     public class Script
     {

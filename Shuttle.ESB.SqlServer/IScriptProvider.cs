@@ -1,4 +1,4 @@
-﻿namespace Shuttle.ESB.SqlServer
+﻿namespace Shuttle.Esb.SqlServer
 {
     public interface IScriptProvider
     {

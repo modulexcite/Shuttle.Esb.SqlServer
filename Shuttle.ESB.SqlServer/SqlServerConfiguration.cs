@@ -1,7 +1,7 @@
 using System;
 using System.IO;
 
-namespace Shuttle.ESB.SqlServer
+namespace Shuttle.Esb.SqlServer
 {
 	public class SqlServerConfiguration : ISqlServerConfiguration
 	{

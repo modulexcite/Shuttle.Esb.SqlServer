@@ -1,8 +1,8 @@
 ﻿using NUnit.Framework;
-using Shuttle.ESB.SqlServer.Idempotence;
-using Shuttle.ESB.Tests;
+using Shuttle.Esb.SqlServer.Idempotence;
+using Shuttle.Esb.Tests;
 
-namespace Shuttle.ESB.SqlServer.Tests
+namespace Shuttle.Esb.SqlServer.Tests
 {
 	[TestFixture]
 	public class SqlIdempotenceTest : IdempotenceFixture

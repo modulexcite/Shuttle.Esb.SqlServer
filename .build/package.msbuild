@@ -2,7 +2,7 @@
 	<PropertyGroup>
 		<DeploymentFolder>deployment</DeploymentFolder>
 		<PackageAssembly>Shuttle.Esb.SqlServer</PackageAssembly>
-		<PackageName>shuttle-esb-sqlserver</PackageName>
+		<PackageName>Shuttle.Esb.SqlServer</PackageName>
 	</PropertyGroup>
 
 	<Import Project="Shuttle.Core.MSBuild.targets" />

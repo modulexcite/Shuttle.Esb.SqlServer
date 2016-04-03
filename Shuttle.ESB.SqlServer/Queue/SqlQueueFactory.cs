@@ -1,7 +1,6 @@
 using System;
 using Shuttle.Core.Data;
 using Shuttle.Core.Infrastructure;
-using Shuttle.Esb;
 
 namespace Shuttle.Esb.SqlServer
 {
@@ -18,7 +17,8 @@ namespace Shuttle.Esb.SqlServer
 			_databaseGateway = new DatabaseGateway();
 		}
 
-		public SqlQueueFactory(IScriptProvider scriptProvider, IDatabaseContextFactory databaseContextFactory, IDatabaseGateway databaseGateway)
+		public SqlQueueFactory(IScriptProvider scriptProvider, IDatabaseContextFactory databaseContextFactory,
+			IDatabaseGateway databaseGateway)
 		{
 			_scriptProvider = scriptProvider;
 			_databaseContextFactory = databaseContextFactory;

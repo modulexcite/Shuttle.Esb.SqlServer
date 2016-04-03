@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using Shuttle.Core.Infrastructure;
@@ -15,7 +14,7 @@ namespace Shuttle.Esb.SqlServer
 
 		public ScriptProvider(string scriptFolder)
 		{
-            Guard.AgainstNullOrEmptyString(scriptFolder, "scriptFolder");
+			Guard.AgainstNullOrEmptyString(scriptFolder, "scriptFolder");
 
 			_scriptFolder = scriptFolder;
 		}
@@ -28,8 +27,8 @@ namespace Shuttle.Esb.SqlServer
 			}
 
 			return parameters != null
-					   ? string.Format(_scripts[script], parameters)
-					   : _scripts[script];
+				? string.Format(_scripts[script], parameters)
+				: _scripts[script];
 		}
 
 		private void AddScript(Script script)
@@ -57,7 +56,8 @@ namespace Shuttle.Esb.SqlServer
 
 				if (files.Length > 1)
 				{
-					throw new ScriptException(string.Format(SqlResources.ScriptCountException, _scriptFolder, script.FileName, files.Length));
+					throw new ScriptException(string.Format(SqlResources.ScriptCountException, _scriptFolder, script.FileName,
+						files.Length));
 				}
 
 				_scripts.Add(script, File.ReadAllText(files[0]));

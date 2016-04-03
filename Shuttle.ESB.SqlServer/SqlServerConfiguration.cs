@@ -5,9 +5,9 @@ namespace Shuttle.Esb.SqlServer
 {
 	public class SqlServerConfiguration : ISqlServerConfiguration
 	{
-        internal static string ProviderName = "System.Data.SqlClient";
+		internal static string ProviderName = "System.Data.SqlClient";
 
-        private string _scriptFolder;
+		private string _scriptFolder;
 
 		public SqlServerConfiguration()
 		{

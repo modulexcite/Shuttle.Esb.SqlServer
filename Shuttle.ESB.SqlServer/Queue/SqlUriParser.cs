@@ -1,6 +1,5 @@
 ﻿using System;
 using Shuttle.Core.Infrastructure;
-using Shuttle.Esb;
 
 namespace Shuttle.Esb.SqlServer
 {
@@ -19,9 +18,9 @@ namespace Shuttle.Esb.SqlServer
 
 			if (uri.LocalPath == "/" || uri.Segments.Length != 2)
 			{
-				throw new UriFormatException(string.Format(ESBResources.UriFormatException,
-														   "sql://{{connection-name}}/{{table-name}}",
-														   uri));
+				throw new UriFormatException(string.Format(EsbResources.UriFormatException,
+					"sql://{{connection-name}}/{{table-name}}",
+					uri));
 			}
 
 			Uri = uri;

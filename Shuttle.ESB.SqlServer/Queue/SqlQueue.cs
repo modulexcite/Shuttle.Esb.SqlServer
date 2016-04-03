@@ -4,7 +4,6 @@ using System.IO;
 using System.Linq;
 using Shuttle.Core.Data;
 using Shuttle.Core.Infrastructure;
-using Shuttle.Esb;
 
 namespace Shuttle.Esb.SqlServer
 {

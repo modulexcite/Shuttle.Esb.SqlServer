@@ -28,5 +28,12 @@ namespace Shuttle.Esb.SqlServer.Tests
 		{
 			TestInboxThroughput("sql://shuttle/{0}", 1000, count, isTransactionalEndpoint);
 		}
+
+
+		[Test]
+		public void Should_be_able_to_expire_a_message()
+		{
+			TestInboxExpiry("sql://shuttle/{0}", false);
+		}
 	}
 }

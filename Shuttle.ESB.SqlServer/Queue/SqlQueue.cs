@@ -159,7 +159,7 @@ namespace Shuttle.Esb.SqlServer
 			}
 		}
 
-		public void Enqueue(Guid messageId, Stream stream)
+		public void Enqueue(TransportMessage transportMessage, Stream stream)
 		{
 			try
 			{
@@ -167,14 +167,14 @@ namespace Shuttle.Esb.SqlServer
 				{
 					_databaseGateway.ExecuteUsing(
 						RawQuery.Create(_enqueueQueryStatement)
-							.AddParameterValue(QueueColumns.MessageId, messageId)
+							.AddParameterValue(QueueColumns.MessageId, transportMessage.MessageId)
 							.AddParameterValue(QueueColumns.MessageBody, stream.ToBytes()));
 				}
 			}
 			catch (Exception ex)
 			{
 				_log.Error(
-					string.Format(SqlResources.EnqueueError, messageId, Uri, ex.Message));
+					string.Format(SqlResources.EnqueueError, transportMessage.MessageId, Uri, ex.Message));
 
 				throw;
 			}

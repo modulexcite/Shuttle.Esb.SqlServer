@@ -168,7 +168,7 @@
     <EmbeddedResource Include="Scripts\IdempotenceIsProcessing.sql" />
     <EmbeddedResource Include="Scripts\IdempotenceMessageHandled.sql" />
     <EmbeddedResource Include="Scripts\IdempotenceIsMessageHandled.sql" />
-    <Content Include="Scripts\SubscriptionManagerCreate.sql" />
+    <EmbeddedResource Include="Scripts\SubscriptionManagerCreate.sql" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Scripts\SubscriptionManagerExists.sql" />

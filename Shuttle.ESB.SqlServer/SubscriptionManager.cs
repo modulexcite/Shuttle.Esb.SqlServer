@@ -67,7 +67,16 @@ namespace Shuttle.Esb.SqlServer
 						_scriptProvider.GetScript(
 							Script.SubscriptionManagerExists))) != 1)
 				{
-					throw new SubscriptionManagerException(SqlResources.SubscriptionManagerDatabaseNotConfigured);
+				    try
+				    {
+				        _databaseGateway.ExecuteUsing(RawQuery.Create(
+				            _scriptProvider.GetScript(
+				                Script.SubscriptionManagerCreate)));
+				    }
+				    catch (Exception ex)
+				    {
+				        throw new DataException(SqlResources.SubscriptionManagerCreateException, ex);
+				    }
 				}
 			}
 

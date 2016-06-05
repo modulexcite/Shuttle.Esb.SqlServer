@@ -20,6 +20,7 @@ namespace Shuttle.Esb.SqlServer
 			new Script("SubscriptionManagerInboxWorkQueueUris");
 
 		public static readonly Script SubscriptionManagerExists = new Script("SubscriptionManagerExists");
+		public static readonly Script SubscriptionManagerCreate = new Script("SubscriptionManagerCreate");
 		public static readonly Script SubscriptionManagerSubscribe = new Script("SubscriptionManagerSubscribe");
 
 		public static readonly Script IdempotenceServiceExists = new Script("IdempotenceServiceExists");

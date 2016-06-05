@@ -250,11 +250,11 @@ namespace Shuttle.Esb.SqlServer {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The database has not been configured for subscription storage.  Please run the SubscriptionManagerCreate.sql script file against your database..
+        ///   Looks up a localized string similar to The database has not been configured for subscription storage and the creation script could not be executed against your database.  The inner exception should provide the reason.  Please run the SubscriptionManagerCreate.sql script file against your database..
         /// </summary>
-        internal static string SubscriptionManagerDatabaseNotConfigured {
+        internal static string SubscriptionManagerCreateException {
             get {
-                return ResourceManager.GetString("SubscriptionManagerDatabaseNotConfigured", resourceCulture);
+                return ResourceManager.GetString("SubscriptionManagerCreateException", resourceCulture);
             }
         }
     }

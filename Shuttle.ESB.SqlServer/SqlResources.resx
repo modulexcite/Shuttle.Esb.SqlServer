@@ -199,7 +199,7 @@
     <value>Directory '{0}' was searched (recursively) for script file '{1}'.  Exactly 1 file must exist in the directory structure but {2} were found.</value>
     <comment>{0} = base folder where search started, {1} = script file name, {2} = number of matching files found</comment>
   </data>
-  <data name="SubscriptionManagerDatabaseNotConfigured" xml:space="preserve">
-    <value>The database has not been configured for subscription storage.  Please run the SubscriptionManagerCreate.sql script file against your database.</value>
+  <data name="SubscriptionManagerCreateException" xml:space="preserve">
+    <value>The database has not been configured for subscription storage and the creation script could not be executed against your database.  The inner exception should provide the reason.  Please run the SubscriptionManagerCreate.sql script file against your database.</value>
   </data>
 </root>

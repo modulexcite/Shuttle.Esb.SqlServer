@@ -26,36 +26,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shuttle.Esb.SqlServer.Tests", "Shuttle.Esb.SqlServer.Tests\Shuttle.Esb.SqlServer.Tests.csproj", "{46B43BF2-0512-4BAB-8863-0F3E427215F6}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".script", ".script", "{ACA70D3C-9A03-417C-8480-E9BDF047E5A5}"
-	ProjectSection(SolutionItems) = preProject
-		Shuttle.Esb.SqlServer\Scripts\IdempotenceComplete.sql = Shuttle.Esb.SqlServer\Scripts\IdempotenceComplete.sql
-		Shuttle.Esb.SqlServer\Scripts\IdempotenceDeferredMessageSent.sql = Shuttle.Esb.SqlServer\Scripts\IdempotenceDeferredMessageSent.sql
-		Shuttle.Esb.SqlServer\Scripts\IdempotenceGetDeferredMessages.sql = Shuttle.Esb.SqlServer\Scripts\IdempotenceGetDeferredMessages.sql
-		Shuttle.Esb.SqlServer\Scripts\IdempotenceHasCompleted.sql = Shuttle.Esb.SqlServer\Scripts\IdempotenceHasCompleted.sql
-		Shuttle.Esb.SqlServer\Scripts\IdempotenceInitialize.sql = Shuttle.Esb.SqlServer\Scripts\IdempotenceInitialize.sql
-		Shuttle.Esb.SqlServer\Scripts\IdempotenceIsMessageHandled.sql = Shuttle.Esb.SqlServer\Scripts\IdempotenceIsMessageHandled.sql
-		Shuttle.Esb.SqlServer\Scripts\IdempotenceIsProcessing.sql = Shuttle.Esb.SqlServer\Scripts\IdempotenceIsProcessing.sql
-		Shuttle.Esb.SqlServer\Scripts\IdempotenceMessageHandled.sql = Shuttle.Esb.SqlServer\Scripts\IdempotenceMessageHandled.sql
-		Shuttle.Esb.SqlServer\Scripts\IdempotenceProcessing.sql = Shuttle.Esb.SqlServer\Scripts\IdempotenceProcessing.sql
-		Shuttle.Esb.SqlServer\Scripts\IdempotenceSendDeferredMessage.sql = Shuttle.Esb.SqlServer\Scripts\IdempotenceSendDeferredMessage.sql
-		Shuttle.Esb.SqlServer\Scripts\IdempotenceServiceCreate.sql = Shuttle.Esb.SqlServer\Scripts\IdempotenceServiceCreate.sql
-		Shuttle.Esb.SqlServer\Scripts\IdempotenceServiceExists.sql = Shuttle.Esb.SqlServer\Scripts\IdempotenceServiceExists.sql
-		Shuttle.Esb.SqlServer\Scripts\QueueCount.sql = Shuttle.Esb.SqlServer\Scripts\QueueCount.sql
-		Shuttle.Esb.SqlServer\Scripts\QueueCreate.sql = Shuttle.Esb.SqlServer\Scripts\QueueCreate.sql
-		Shuttle.Esb.SqlServer\Scripts\QueueDequeue.sql = Shuttle.Esb.SqlServer\Scripts\QueueDequeue.sql
-		Shuttle.Esb.SqlServer\Scripts\QueueDequeueId.sql = Shuttle.Esb.SqlServer\Scripts\QueueDequeueId.sql
-		Shuttle.Esb.SqlServer\Scripts\QueueDrop.sql = Shuttle.Esb.SqlServer\Scripts\QueueDrop.sql
-		Shuttle.Esb.SqlServer\Scripts\QueueEnqueue.sql = Shuttle.Esb.SqlServer\Scripts\QueueEnqueue.sql
-		Shuttle.Esb.SqlServer\Scripts\QueueExists.sql = Shuttle.Esb.SqlServer\Scripts\QueueExists.sql
-		Shuttle.Esb.SqlServer\Scripts\QueuePurge.sql = Shuttle.Esb.SqlServer\Scripts\QueuePurge.sql
-		Shuttle.Esb.SqlServer\Scripts\QueueRead.sql = Shuttle.Esb.SqlServer\Scripts\QueueRead.sql
-		Shuttle.Esb.SqlServer\Scripts\QueueRemove.sql = Shuttle.Esb.SqlServer\Scripts\QueueRemove.sql
-		Shuttle.Esb.SqlServer\Scripts\SubscriptionManagerCreate.sql = Shuttle.Esb.SqlServer\Scripts\SubscriptionManagerCreate.sql
-		Shuttle.Esb.SqlServer\Scripts\SubscriptionManagerExists.sql = Shuttle.Esb.SqlServer\Scripts\SubscriptionManagerExists.sql
-		Shuttle.Esb.SqlServer\Scripts\SubscriptionManagerInboxWorkQueueUris.sql = Shuttle.Esb.SqlServer\Scripts\SubscriptionManagerInboxWorkQueueUris.sql
-		Shuttle.Esb.SqlServer\Scripts\SubscriptionManagerSubscribe.sql = Shuttle.Esb.SqlServer\Scripts\SubscriptionManagerSubscribe.sql
-	EndProjectSection
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

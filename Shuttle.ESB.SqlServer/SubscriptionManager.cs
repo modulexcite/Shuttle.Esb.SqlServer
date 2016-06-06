@@ -86,23 +86,30 @@ namespace Shuttle.Esb.SqlServer
 			}
 		}
 
-		public void Subscribe(IEnumerable<string> messageTypeFullNames)
-		{
-			Guard.AgainstNull(messageTypeFullNames, "messageTypeFullNames");
+	    public void Subscribe(IEnumerable<string> messageTypeFullNames)
+	    {
+	        Guard.AgainstNull(messageTypeFullNames, "messageTypeFullNames");
 
-			if (!Started)
-			{
-				_deferredSubscriptions.AddRange(messageTypeFullNames);
+	        if (!Started)
+	        {
+	            _deferredSubscriptions.AddRange(messageTypeFullNames);
 
-				return;
-			}
+	            return;
+	        }
 
-			if (_serviceBusConfiguration.IsWorker)
-			{
-				return;
-			}
+	        if (_serviceBusConfiguration.IsWorker)
+	        {
+	            return;
+	        }
 
-			using (_databaseContextFactory.Create(SqlServerConfiguration.ProviderName, _subscriptionConnectionString))
+	        if (!_serviceBusConfiguration.HasInbox
+	            ||
+	            _serviceBusConfiguration.Inbox.WorkQueue == null)
+		    {
+                throw new SubscriptionManagerException(string.Format(EsbResources.SubscribeWithNoInboxException, string.Join(",", messageTypeFullNames)));
+		    }
+
+		    using (_databaseContextFactory.Create(SqlServerConfiguration.ProviderName, _subscriptionConnectionString))
 			{
 				foreach (var messageType in messageTypeFullNames)
 				{

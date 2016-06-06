@@ -106,7 +106,7 @@ namespace Shuttle.Esb.SqlServer
 	            ||
 	            _serviceBusConfiguration.Inbox.WorkQueue == null)
 		    {
-                throw new SubscriptionManagerException(string.Format(EsbResources.SubscribeWithNoInboxException, string.Join(",", messageTypeFullNames)));
+                throw new SubscriptionManagerException(EsbResources.SubscribeWithNoInboxException);
 		    }
 
 		    using (_databaseContextFactory.Create(SqlServerConfiguration.ProviderName, _subscriptionConnectionString))

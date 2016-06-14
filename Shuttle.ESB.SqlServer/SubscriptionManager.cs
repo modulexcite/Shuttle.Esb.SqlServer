@@ -75,7 +75,10 @@ namespace Shuttle.Esb.SqlServer
 				    }
 				    catch (Exception ex)
 				    {
-				        throw new DataException(SqlResources.SubscriptionManagerCreateException, ex);
+                        if (!ex.Message.Equals("There is already an object named 'SubscriberMessageType' in the database.", StringComparison.OrdinalIgnoreCase))
+                        {
+                            throw new DataException(SqlResources.SubscriptionManagerCreateException, ex);
+                        }
 				    }
 				}
 			}
